@@ -3,9 +3,11 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
+const Players = require('./models/players');
 // const {dbConnect} = require('./db-knex');
 
 const app = express();
@@ -44,8 +46,24 @@ const testArray = [
 ];
 
 
-app.get('/game/', (req, res) => {
+app.get('/game', (req, res) => {
   res.json({testArray});
+});
+
+
+/* ============ POST/CREATE SCORE ============= */
+
+app.post('/players', (req, res, next)=> {
+
+  Players.create()
+    .then(result => {
+      console.log(result);
+      res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+      
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 function runServer(port = PORT) {
