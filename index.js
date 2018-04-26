@@ -58,7 +58,8 @@ const userTest = {
     totalScore: 1000000000
   }
 };
-
+ 
+/* ============ GET/FIND SCORE ============= */
 
 app.get('/game/players', (req, res, next) => {
   return Players.find()
@@ -73,7 +74,7 @@ app.get('/game/players', (req, res, next) => {
 });
 
 
-/* ============ POST/CREATE SCORE ============= */
+/* ============ POST/CREATE PLAYER AND SCORE ============= */
 
 app.post('/game/players', (req, res, next)=> {
 
@@ -86,6 +87,35 @@ app.post('/game/players', (req, res, next)=> {
       next(err);
     });
 });
+
+/* ============ PUT/UPDATE PlAYERS AND SCORE ============= */
+app.put('/game/players/:id', (req, res, next) => {
+  const id = req.params.id;
+  Players.findByIdAndUpdate(id, {score:{totalScore: 200}} )
+    .then((obj) => {
+      res.status(201).json(obj);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+/* ============ DELETE/REMOVE PlAYERS AND SCORE ============= */
+app.delete('/game/players/:id', (req,res, next) => {
+  
+  const id = req.params.id;
+  
+  Players.findByIdAndRemove( id )
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(err => {
+      next(err);
+    });
+});
+
+
+
 
 function runServer(port = PORT) {
   const server = app
