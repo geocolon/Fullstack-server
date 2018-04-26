@@ -6,7 +6,7 @@ const playerSchema = new mongoose.Schema({
   name: { type:String, unique:true },
   score:{
     update: {type: Date, default:Date.now},
-    totalScore: Number
+    totalScore: { type: Number, default:0 }
   }
 });
 
