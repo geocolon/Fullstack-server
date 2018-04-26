@@ -1,0 +1,9 @@
+[
+    {
+        "name":"George",
+        "score": {
+            "update": "new Date(2018,3,26)",
+            "totalScore": "1000000000"
+        }
+    }
+]

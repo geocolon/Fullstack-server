@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
-const Players = require('./models/players');
+const Players = require('./models/player');
 // const {dbConnect} = require('./db-knex');
 
 const app = express();
@@ -24,6 +24,11 @@ app.use(
   })
 );
 
+app.use(express.static('public'));
+
+app.use(
+  express.json()
+);
 
 const testArray = [
   'Bath Blue',
@@ -45,21 +50,37 @@ const testArray = [
   'Yorkshire Blue'
 ];
 
+const userTest = {
+  id:'00001',
+  name: 'George',
+  score: {
+    update: new Date(2018,3,26),
+    totalScore: 1000000000
+  }
+};
 
-app.get('/game', (req, res) => {
-  res.json({testArray});
+
+app.get('/game/players', (req, res, next) => {
+  return Players.find()
+    .then(data => {
+      return res.json(data);
+    })
+    .catch(err =>{
+      next(err);
+    });
+   
+  
 });
 
 
 /* ============ POST/CREATE SCORE ============= */
 
-app.post('/players', (req, res, next)=> {
+app.post('/game/players', (req, res, next)=> {
 
-  Players.create()
+  Players.create(req.body)
     .then(result => {
       console.log(result);
-      res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
-      
+      return res.sendStatus(201);      
     })
     .catch(err => {
       next(err);
