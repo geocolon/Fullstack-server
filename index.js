@@ -81,7 +81,7 @@ app.post('/game/players', (req, res, next)=> {
   Players.create(req.body)
     .then(result => {
       console.log(result);
-      return res.sendStatus(201);      
+      return res.status(201).json(result);      
     })
     .catch(err => {
       next(err);
