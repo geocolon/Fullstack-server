@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
-const Players = require('./models/player');
+const Users = require('./models/user');
 // const {dbConnect} = require('./db-knex');
 
 const app = express();
@@ -61,8 +61,8 @@ const userTest = {
  
 /* ============ GET/FIND SCORE ============= */
 
-app.get('/game/players', (req, res, next) => {
-  return Players.find()
+app.get('/api/users', (req, res, next) => {
+  return Users.find()
     .then(data => {
       return res.json(data);
     })
@@ -74,11 +74,11 @@ app.get('/game/players', (req, res, next) => {
 });
 
 
-/* ============ POST/CREATE PLAYER AND SCORE ============= */
+/* ============ POST/CREATE USERS AND SCORE ============= */
 
-app.post('/game/players', (req, res, next)=> {
+app.post('/api/users', (req, res, next)=> {
 
-  Players.create(req.body)
+  Users.create(req.body)
     .then(result => {
       console.log(result);
       return res.status(201).json(result);      
@@ -88,10 +88,10 @@ app.post('/game/players', (req, res, next)=> {
     });
 });
 
-/* ============ PUT/UPDATE PlAYERS AND SCORE ============= */
-app.put('/game/players/:id', (req, res, next) => {
+/* ============ PUT/UPDATE USERS AND SCORE ============= */
+app.put('/api/users/:id', (req, res, next) => {
   const id = req.params.id;
-  Players.findByIdAndUpdate(id, {score:{totalScore: 200}} )
+  Users.findByIdAndUpdate(id, {score:{totalScore: req.body.score}} )
     .then((obj) => {
       res.status(201).json(obj);
     })
@@ -100,12 +100,12 @@ app.put('/game/players/:id', (req, res, next) => {
     });
 });
 
-/* ============ DELETE/REMOVE PlAYERS AND SCORE ============= */
-app.delete('/game/players/:id', (req,res, next) => {
+/* ============ DELETE/REMOVE USERS AND SCORE ============= */
+app.delete('/api/users/:id', (req,res, next) => {
   
   const id = req.params.id;
   
-  Players.findByIdAndRemove( id )
+  Users.findByIdAndRemove( id )
     .then(() => {
       res.sendStatus(204);
     })

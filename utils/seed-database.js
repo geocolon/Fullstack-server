@@ -3,15 +3,15 @@
 const mongoose = require('mongoose');
 
 const { DATABASE_URL } = require('../config');
-const Players = require('../models/player');
+const Users = require('../models/user');
 
-const seedPlayers = require('../db/seed/players');
+const seedUsers = require('../db/seed/users');
 
 mongoose.connect( DATABASE_URL )
   .then(() => mongoose.connection.db.dropDatabase())
   .then(()=> {
     return Promise.all([
-      Players.insertMany(seedPlayers)
+      Users.insertMany(seedUsers)
     ]);
   })
   .then(() => mongoose.disconnect())
