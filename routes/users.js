@@ -110,7 +110,7 @@ router.delete('/folders/:id', (req, res, next) => {
   const { id } = req.params;
 
   // Manual "cascading" delete to ensure integrity
-  const folderRemovePromise = Folder.findByIdAndRemove({ _id: id });  // NOTE **underscore** _id
+  const folderRemovePromise = User.findByIdAndRemove({ _id: id });  // NOTE **underscore** _id
   // const noteRemovePromise = Note.deleteMany({ folderId: id });
 
   const noteRemovePromise = Note.updateMany(
