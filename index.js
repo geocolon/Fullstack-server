@@ -35,65 +35,6 @@ app.use(
   express.json()
 );
 
- 
-// /* ============ GET/FIND SCORE ============= */
-
-// app.get('/api/users', (req, res, next) => {
-//   return Users.find()
-//     .then(data => {
-//       return res.json(data);
-//     })
-//     .catch(err =>{
-//       next(err);
-//     });
-   
-  
-// });
-
-
-// /* ============ POST/CREATE USERS AND SCORE ============= */
-
-// app.post('/api/users', (req, res, next)=> {
-
-//   Users.create(req.body)
-//     .then(result => {
-//       console.log(result);
-//       return res.status(201).json(result);      
-//     })
-//     .catch(err => {
-//       next(err);
-//     });
-// });
-
-// /* ============ PUT/UPDATE USERS AND SCORE ============= */
-// app.put('/api/users/:id', (req, res, next) => {
-//   const id = req.params.id;
-//   Users.findByIdAndUpdate(id, {score:{totalScore: req.body.score}} )
-//     .then((obj) => {
-//       res.status(201).json(obj);
-//     })
-//     .catch(err => {
-//       next(err);
-//     });
-// });
-
-// /* ============ DELETE/REMOVE USERS AND SCORE ============= */
-// app.delete('/api/users/:id', (req,res, next) => {
-  
-//   const id = req.params.id;
-  
-//   Users.findByIdAndRemove( id )
-//     .then(() => {
-//       res.sendStatus(204);
-//     })
-//     .catch(err => {
-//       next(err);
-//     });
-// });
-
-
-
-
 function runServer(port = PORT) {
   const server = app
     .listen(port, () => {

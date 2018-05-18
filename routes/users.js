@@ -29,7 +29,7 @@ router.get('/users/:id', (req, res, next) => {
     return next(err);
   }
 
-  Folder.findById(id)
+  User.findById(id)
     .then(result => {
       if (result) {
         res.json(result);
@@ -43,7 +43,7 @@ router.get('/users/:id', (req, res, next) => {
 });
 
 /* ========== POST/CREATE AN ITEM ========== */
-router.post('/folders', (req, res, next) => {
+router.post('/users', (req, res, next) => {
   const { name } = req.body;
 
   const newFolder = { name };
@@ -55,7 +55,7 @@ router.post('/folders', (req, res, next) => {
     return next(err);
   }
 
-  Folder.create(newFolder)
+  User.create(newFolder)
     .then(result => {
       res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
     })
@@ -69,7 +69,7 @@ router.post('/folders', (req, res, next) => {
 });
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
-router.put('/folders/:id', (req, res, next) => {
+router.put('/users/:id', (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
 
@@ -86,9 +86,9 @@ router.put('/folders/:id', (req, res, next) => {
     return next(err);
   }
 
-  const updateFolder = { name };
+  const updateUser = { username };
 
-  Folder.findByIdAndUpdate(id, updateFolder, { new: true })
+  User.findByIdAndUpdate(id, updateUser, { new: true })
     .then(result => {
       if (result) {
         res.json(result);
@@ -106,7 +106,7 @@ router.put('/folders/:id', (req, res, next) => {
 });
 
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
-router.delete('/folders/:id', (req, res, next) => {
+router.delete('/user/:id', (req, res, next) => {
   const { id } = req.params;
 
   // Manual "cascading" delete to ensure integrity
