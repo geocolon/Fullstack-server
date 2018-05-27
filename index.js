@@ -15,6 +15,7 @@ const Users = require('./models/user');
 const app = express();
 
 // Mount routers
+app.options('*', cors());
 app.use('/api', usersRouter);
 
 app.use(
