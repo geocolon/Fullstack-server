@@ -127,6 +127,7 @@ router.post('/users', jsonParser, (req, res) => {
           location: 'username'
         });
       }
+      console.log('Is the data here?');
       // If there is no existing user, hash the password
       return User.hashPassword(password);
     })

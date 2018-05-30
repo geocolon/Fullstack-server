@@ -4,19 +4,24 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('passport');
+
 
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+const {localStrategy, jwtStrategy } = require('./passport/local');
 
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 const Users = require('./models/user');
 // const {dbConnect} = require('./db-knex');
-
 const app = express();
-
 // Mount routers
 app.options('*', cors());
-app.use('/api', usersRouter);
+app.use('/api', usersRouter); 
+app.use('/api', authRouter);
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {

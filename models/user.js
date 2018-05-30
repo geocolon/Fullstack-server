@@ -20,8 +20,8 @@ const usersSchema = new mongoose.Schema({
 usersSchema.methods.serialize = function() {
   return {
     username: this.username || '',
-    firstName: this.firstName || '',
-    lastName: this.lastName || ''
+    firstname: this.firstname || '',
+    lastname: this.lastname || ''
   };
 };
 
@@ -30,7 +30,7 @@ usersSchema.methods.validatePassword = function (password) {
 };
 
 usersSchema.statics.hashPassword = function (password) {
-  return bcrypt.compare(password, 10);
+  return bcrypt.hash(password, 10);
 };
 
 module.exports = mongoose.model('Users', usersSchema);
