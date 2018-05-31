@@ -3,7 +3,7 @@
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 
-const { User } = require('../models/user');
+const User  = require('../models/user');
 const  JWT_SECRET  = require('../config');
 
 const localStrategy = new LocalStrategy((username, password, callback) => {
@@ -16,22 +16,25 @@ const localStrategy = new LocalStrategy((username, password, callback) => {
         // Any errors like this will be handled in the catch block.
         return Promise.reject({
           reason: 'LoginError',
-          message: 'Incorrect username or password'
+          message: 'Incorrect username'
         });
       }
+      console.log('this is the password',password);
       return user.validatePassword(password);
     })
     .then(isValid => {
+      console.log('Here is the password',isValid);
       if (!isValid) {
         return Promise.reject({
           reason: 'LoginError',
-          message: 'Incorrect username or password'
+          message: 'Incorrect password'
         });
       }
       return callback(null, user);
     })
     .catch(err => {
       if (err.reason === 'LoginError') {
+        console.log('Error here***',err);
         return callback(null, false, err);
       }
       return callback(err, false);

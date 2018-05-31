@@ -26,10 +26,12 @@ usersSchema.methods.serialize = function() {
 };
 
 usersSchema.methods.validatePassword = function (password) {
+  console.log('bcrypt.compare here',bcrypt.compare(password, this.password).then(data => console.log('.then data',data)));
   return bcrypt.compare(password, this.password);
 };
 
 usersSchema.statics.hashPassword = function (password) {
+
   return bcrypt.hash(password, 10);
 };
 
