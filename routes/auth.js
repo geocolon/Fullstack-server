@@ -33,11 +33,10 @@ router.post('/refresh', jwtAuth, (req, res) => {
   res.json({ authToken });
 });
 
-// function createAuthToken (user) {
-//   return jwt.sign({ user }, JWT_SECRET, {
-//     subject: user.username,
-//     expiresIn: JWT_EXPIRY
-//   });
-// }
+router.get('/auth/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'Chewie'
+  });
+});
 
 module.exports = router;
