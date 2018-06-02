@@ -40,10 +40,11 @@ const localStrategy = new LocalStrategy((username, password, callback) => {
       return callback(err, false);
     });
 });
-
+console.log('This is JWT_SECRET ',JWT_SECRET);
+console.log('This is ExtractJwt ',ExtractJwt.fromAuthHeaderWithScheme('Bearer'));
 const jwtStrategy = new JwtStrategy(
   {
-    secretOrKey: JWT_SECRET,
+    secretOrKey: JWT_SECRET.JWT_SECRET,
     // Look for the JWT as a Bearer auth header
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
     // Only allow HS256 tokens - the same as the ones we issue

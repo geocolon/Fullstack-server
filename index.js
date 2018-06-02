@@ -5,7 +5,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
-
+const jwt = require('jsonwebtoken');
 
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
@@ -17,13 +17,28 @@ const Users = require('./models/user');
 // const {dbConnect} = require('./db-knex');
 const app = express();
 // Mount routers
-app.options('*', cors());
+app.use( cors({ origin: CLIENT_ORIGIN }) );
+// app.options('*', cors());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
-app.use('/api', usersRouter); 
-app.use('/api', authRouter);
+app.use(express.static('public'));
+app.use('/api/', usersRouter); 
+app.use('/api/auth/', authRouter);
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
+ 
+app.get('/api/protected', jwtAuth, (req, res) => {
+  console.log('req.body, this is protected',req.body);
+  return res.json({
+    data: 'rosebud'
+  });
+});
 
 
+// app.post('/refresh', jwtAuth, (req, res) => {
+//   const authToken = createAuthToken(req.user);
+//   res.json({authToken});
+// });
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -35,10 +50,10 @@ app.use(
 app.use((req, res, next) => { 
   res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Credentials','true'); 
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization'); res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization'); 
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
   if(req.method === 'OPTIONS') { return res.sendStatus(204); } return next(); });
 
-app.use(express.static('public'));
 
 app.use(
   express.json()
