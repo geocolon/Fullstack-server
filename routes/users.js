@@ -1,9 +1,7 @@
 'use strict';
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
-
 const mongoose = require('mongoose');
 
 const User = require('../models/user');

@@ -8,6 +8,8 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 const usersRouter = require('./routes/users');
+const notesRouter = require('./routes/notes');
+const recipesRouter = require('./routes/recipes');
 const authRouter = require('./routes/auth');
 const {localStrategy, jwtStrategy } = require('./passport/local');
 
@@ -21,14 +23,16 @@ app.use( cors({ origin: CLIENT_ORIGIN }) );
 // app.options('*', cors());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
+
 app.use(express.static('public'));
 app.use('/api/', usersRouter); 
+app.use('/api/notes', notesRouter); 
+app.use('/api/recipes', recipesRouter); 
 app.use('/api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
  
 app.get('/api/protected', jwtAuth, (req, res) => {
-  console.log('req.body, this is protected',req.body);
   return res.json({
     data: 'rosebud'
   });
