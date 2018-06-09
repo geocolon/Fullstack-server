@@ -14,7 +14,8 @@ const usersSchema = new mongoose.Schema({
     require: true
   },
   firstname: {type: String, default: ''},
-  lastname: {type: String, default: ''}
+  lastname: {type: String, default: ''},
+  note: [{type: mongoose.Schema.Types.ObjectId, ref: 'note'}]
 });
 
 usersSchema.methods.serialize = function() {

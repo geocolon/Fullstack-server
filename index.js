@@ -27,14 +27,14 @@ passport.use(jwtStrategy);
 app.use(express.static('public'));
 app.use('/api/', usersRouter); 
 app.use('/api/notes', notesRouter); 
-app.use('/api/recipes', recipesRouter); 
+// app.use('/api/recipes', recipesRouter); 
 app.use('/api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
  
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({
-    data: 'rosebud'
+    data: 'Chewie'
   });
 });
 

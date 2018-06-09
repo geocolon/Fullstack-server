@@ -15,6 +15,7 @@ const jsonParser = bodyParser.json();
 router.get('/users', (req, res) => {
   // console.log(req);
   return User.find()
+    .populate('notes')
     .then((users) => {
       // console.log('users*',users);
       res.json(users.map(user => user.serialize()));
