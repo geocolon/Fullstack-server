@@ -16,16 +16,35 @@ const User = require('../models/user');
 
 // when the root of this router is called with GET, return
 // all current ShoppingList items
-router.get('/', (req, res, next) => {
-  return Note.find()
-    .then(results => {
-      res.json(results);
+router.get('/', (req, res) => {
+  
+  Note
+    .find()
+    .then(notes => {
+      res.json({
+        notes: notes.map(
+          note => note.serialize())
+      });
     })
-    .catch(err => {
-      next(err);
-    });
+    .catch(
+      err => {
+        console.error(err);
+        res.status(500).json({message:'Inernal server error'});
+      });
 });
 
+// Find by ID
+
+router.get('/:id', (req, res) => {
+  Note
+    .then(console.log(req.params))
+    .findById(req.params.id)
+    .then(note => res.json(note.serialize()))
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Inernal server error'});
+    });
+});
 
 // when a new shopping list item is posted, make sure it's
 // got required fields ('name' and 'checked'). if not,
@@ -54,9 +73,10 @@ router.post('/', jsonParser, (req, res) => {
 // when DELETE request comes in with an id in path,
 // try to delete that item from ShoppingList.
 router.delete('/:id', (req, res) => {
-  Note.delete(req.params.id);
-  console.log(`Deleted shopping list item \`${req.params.ID}\``);
-  res.status(204).end();
+  Note
+    .findByIdAndRemove(req.params.id)
+    .then(() => res.status(204).end())
+    .catch(err => res.status(500).json({message:'internal server erro'}));
 });
 
 // when PUT request comes in with updated item, ensure has

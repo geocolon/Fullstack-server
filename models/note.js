@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const noteSchema = new mongoose.Schema({
   name: { type: String },
   text: { type: String },
-  username: {type: mongoose.Schema.Types.ObjectId, ref: 'username'},
+  username: {type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true},
   created: { type: Date, default: Date.now },
 });
 

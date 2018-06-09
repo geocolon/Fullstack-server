@@ -15,7 +15,7 @@ const usersSchema = new mongoose.Schema({
   },
   firstname: {type: String, default: ''},
   lastname: {type: String, default: ''},
-  note: [{type: mongoose.Schema.Types.ObjectId, ref: 'note'}]
+  notes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Note'}]
 });
 
 usersSchema.methods.serialize = function() {
@@ -36,4 +36,4 @@ usersSchema.statics.hashPassword = function (password) {
   return bcrypt.hash(password, 10);
 };
 
-module.exports = mongoose.model('Users', usersSchema);
+module.exports = mongoose.model('User', usersSchema);
