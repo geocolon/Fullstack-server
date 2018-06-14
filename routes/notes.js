@@ -18,9 +18,9 @@ const User = require('../models/user');
 
 // when the root of this router is called with GET, return
 // all current ShoppingList items
-router.get('/', (req, res) => {
+router.get('/',jwtAuth, (req, res) => { 
   Note
-    .find()
+    .find({username:req.user.username})
     .then(notes => {
       res.json(notes);
     })
@@ -55,10 +55,8 @@ router.get('/:id', [jwtAuth, jsonParser], (req, res, next) => {
 router.post('/', [jwtAuth, jsonParser], (req, res, next) => {
   // ensure `name` and `text` are in request body
   const requiredFields = ['name', 'text'];
-  const noteUserName = User.username;
-  const reqUser = req.body.username;
-  console.log(reqUser);
-  console.log('note username',noteUserName);
+  // const noteUserName = User.username;
+  // const reqUser = req.body.username;
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -78,7 +76,6 @@ router.post('/', [jwtAuth, jsonParser], (req, res, next) => {
         });
     })
     .then(item => {
-      console.log('What are items?',item.notes);
       res.status(201).json(item.notes);
     })
     .catch(err => {
@@ -90,7 +87,7 @@ router.post('/', [jwtAuth, jsonParser], (req, res, next) => {
 
 // when DELETE request comes in with an id in path,
 // try to delete that item from Note.
-router.delete('/:id', [jwtAuth, jsonParser], (req, res) => {
+router.delete('/:id', jwtAuth, (req, res) => {
   Note
     .findByIdAndRemove(req.params.id)
     .then(() => res.status(204).end())
