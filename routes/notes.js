@@ -32,8 +32,7 @@ router.get('/', (req, res) => {
 });
 // Find by ID
 
-router.get('/:id', (req, res, next) => {
-  console.log('Values of the req. ',req);
+router.get('/:id', [jwtAuth, jsonParser], (req, res, next) => {
   Note
     .findById(req.params.id)
     .then(result => {
@@ -56,6 +55,10 @@ router.get('/:id', (req, res, next) => {
 router.post('/', [jwtAuth, jsonParser], (req, res, next) => {
   // ensure `name` and `text` are in request body
   const requiredFields = ['name', 'text'];
+  const noteUserName = User.username;
+  const reqUser = req.body.username;
+  console.log(reqUser);
+  console.log('note username',noteUserName);
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -64,16 +67,20 @@ router.post('/', [jwtAuth, jsonParser], (req, res, next) => {
       return res.status(400).send(message);
     }
   }
-  return Note.create({name:req.body.name, text:req.body.text})
+  return Note.create({name:req.body.name, username:req.body.username, text:req.body.text})
     .then(data => {
-      console.log(req.user.username);
       return User.findOne({username: req.user.username})
         .then((user) => {
           user.notes.push(data.id);
+          // if statement here
           return user.save();
+
         });
     })
-    .then(item => res.status(201).json(item))
+    .then(item => {
+      console.log('What are items?',item.notes);
+      res.status(201).json(item.notes);
+    })
     .catch(err => {
       next(err);
     });
@@ -107,8 +114,7 @@ router.put('/:id', [jwtAuth, jsonParser], (req, res) => {
     }
   }
   if (req.params.id !== req.body.id) {
-    const message = (
-      `Request path id (${req.params.id}) and request body id `
+    const message = (`Request path id (${req.params.id}) and request body id `
       `(${req.body.id}) must match`);
     console.error(message);
     return res.status(400).send(message);

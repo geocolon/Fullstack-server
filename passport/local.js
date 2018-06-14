@@ -19,11 +19,9 @@ const localStrategy = new LocalStrategy((username, password, callback) => {
           message: 'Incorrect username'
         });
       }
-      console.log('this is the password',password);
       return user.validatePassword(password);
     })
     .then(isValid => {
-      console.log('Here is the password',isValid);
       if (!isValid) {
         return Promise.reject({
           reason: 'LoginError',
